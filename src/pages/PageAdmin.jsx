@@ -38,6 +38,11 @@ export default function Admin() {
             </button>
           </div>
         </form>
+        <div>
+          <button className="p-2 bg-emerald-400 rounded-lg mt-4 hover:bg-emerald-500 w-full ">
+            Criar Mensagem
+          </button>
+        </div>
       </div>
     </>
   );

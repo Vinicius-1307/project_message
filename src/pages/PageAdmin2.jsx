@@ -26,6 +26,12 @@ export default function Admin2() {
             </button>
           </div>
         </form>
+
+        <div>
+          <button className="p-2 bg-emerald-400 rounded-lg mt-4 hover:bg-emerald-500 w-full ">
+            Cadastrar Usuário
+          </button>
+        </div>
       </div>
     </>
   );
