@@ -1,7 +1,32 @@
+import axios from "axios";
 import { useState } from "react";
 
 export default function Admin() {
   const [showFormUser, setShowFormUser] = useState(true);
+
+  // const handleCreateUser = async (event) => {
+  //   await axios.post(
+  //     "http://127.0.0.1:8000/api/user",
+  //     {
+  //       email,
+  //       password
+  //     },
+  //     {
+  //       headers: { "Content-Type": "application/json" },
+  //     }
+  //   )
+  //     .then((response) => {
+  //       alert(response.data.Message)
+  //       Router.replace('/home');
+  //       console.log(response.data.Message);
+  //     })
+  //     .catch((error) => {
+  //       if (error.response.data) {
+  //         alert(error.response.data.Message)
+  //       }
+  //       Router.reload();
+  //       console.log(error.response.data);
+  //     });
 
   return (
     <>
@@ -86,6 +111,8 @@ export default function Admin() {
           </div>
         </div>
       )}
+
+
     </>
   );
 }

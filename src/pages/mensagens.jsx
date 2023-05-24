@@ -91,12 +91,12 @@ export default function Message() {
 
             <tbody>
               <tr className="text-green-400 even:bg-teal-900">
-                <td className="px-1">Texto da mensagem vai vim aqui</td>
+                <td className="px-1">Texto da mensagem vai vir aqui</td>
                 <td className="px-1">23/05/2023</td>
                 <td className="px-1">Sim</td>
               </tr>
               <tr className="text-green-400 even:bg-teal-900">
-                <td className="px-1">Texto da mensagem vai vim aqui</td>
+                <td className="px-1">Texto da mensagem vai vir aqui</td>
                 <td className="px-1">23/05/2023</td>
                 <td className="px-1">Sim</td>
               </tr>
