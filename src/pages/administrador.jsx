@@ -8,6 +8,9 @@ export default function Admin() {
   const [password, setPassword] = useState(null);
   const [text, setText] = useState(null);
   const router = useRouter();
+  const [openInicio, setOpenInicio] = useState(null);
+
+
 
   const handleCreateMessage = async (event) => {
     event.preventDefault();
@@ -42,6 +45,7 @@ export default function Admin() {
   };
   const handleCreateUser = async (event) => {
     event.preventDefault();
+
 
     await axios
       .post(
@@ -117,6 +121,7 @@ export default function Admin() {
               </button>
             </div>
           </form>
+
           <div>
             <button
               className="p-2 bg-emerald-400 rounded-lg mt-4 hover:bg-emerald-500 w-full"
@@ -125,7 +130,7 @@ export default function Admin() {
               Criar Mensagem
             </button>
           </div>
-        </div>
+        </div >
       ) : (
         <div className="flex flex-col justify-center items-center w-full h-screen bg-teal-950  ">
           <form
@@ -165,7 +170,9 @@ export default function Admin() {
             </button>
           </div>
         </div>
-      )}
+
+      )
+      }
     </>
   );
 }

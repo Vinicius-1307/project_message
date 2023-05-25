@@ -4,6 +4,8 @@ import { useState } from 'react';
 
 export default function Message({ getmessages }) {
   const [showModalMessage, setShowModalMessage] = useState(true);
+  const [showMessageRead, setShowMessageRead] = useState(true);
+
   console.log(getmessages);
   return (
     <>
@@ -42,6 +44,7 @@ export default function Message({ getmessages }) {
                     <button
                       type="button"
                       onClick={() => setShowModalMessage(false)}
+                      // onClick={() => setShowMessageRead(message.text == true)}
                       className="text-gray-400 bg-transparent transition-colors hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
                       data-modal-toggle="defaultModal"
                     >
@@ -61,11 +64,16 @@ export default function Message({ getmessages }) {
                   </div>
                   <div className="max-w-2xl p-10">
                     <div className="flex flex-col">
-                      <textarea
-                        cols="30"
-                        rows="10"
-                        className="px-3 py-2 border-2"
-                      ></textarea>
+
+                      {getmessages.length > 0 ? (
+                        getmessages.filter(message => message.is_read == false).map((message) => (
+                          <div className='p-2 text-green-600'>{message.text}</div>
+                        ))
+                      ) : (
+                        <span className="text-white">Nenhuma mensagem encontrada.</span>
+                      )}
+
+
 
                       <button className="py-2 px-3 bg-emerald-400 rounded-lg hover:bg-emerald-500 mt-10">
                         Próxima
@@ -77,7 +85,7 @@ export default function Message({ getmessages }) {
             </div>
           </div>
         </Dialog>
-      </Transition>
+      </Transition >
 
       <div className="flex flex-col justify-center items-center w-full h-screen bg-teal-950  ">
         <div className="w-[500px]">
@@ -91,8 +99,10 @@ export default function Message({ getmessages }) {
             </thead>
 
             <tbody>
+
+
               {getmessages.length > 0 ? (
-                getmessages.map((message) => (
+                getmessages.filter(message => message.is_read == true).map((message) => (
                   <>
                     <tr className="text-green-400 even:bg-teal-900">
                       <td className="px-1">{message.text}</td>
@@ -103,6 +113,30 @@ export default function Message({ getmessages }) {
                     </tr>
                   </>
                 ))
+
+
+              ) : (
+                <span className="text-white">Nenhuma mensagem encontrada.</span>
+              )}
+            </tbody>
+
+            <tbody>
+
+
+              {getmessages.length > 0 ? (
+                getmessages.filter(message => message.is_read == false).map((message) => (
+                  <>
+                    <tr className="text-white even:bg-teal-900">
+                      <td className="px-1">{message.text}</td>
+                      <td className="px-1">{message.created_at}</td>
+                      <td className="px-1">
+                        {!!message.is_read ? 'Sim' : 'Não'}
+                      </td>
+                    </tr>
+                  </>
+                ))
+
+
               ) : (
                 <span className="text-white">Nenhuma mensagem encontrada.</span>
               )}
@@ -127,4 +161,19 @@ export async function getServerSideProps() {
       getmessages: res.data.data,
     },
   };
+
+  // export async function getServerSideProps() {
+  //   const res = await axios.get(
+  //     'http://127.0.0.1:8000/api/message',
+  //     {},
+  //     {
+  //       headers: { 'Content-Type': 'application/json' },
+  //     },
+  //   );
+
+  //   return {
+  //     props: {
+  //       getmessages: res.data.data,
+  //     },
+  //   };
 }
