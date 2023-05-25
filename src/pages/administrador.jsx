@@ -1,51 +1,99 @@
-import axios from "axios";
-import { useState } from "react";
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 export default function Admin() {
   const [showFormUser, setShowFormUser] = useState(true);
+  const [name, setName] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [text, setText] = useState(null);
+  const router = useRouter();
 
-  // const handleCreateUser = async (event) => {
-  //   await axios.post(
-  //     "http://127.0.0.1:8000/api/user",
-  //     {
-  //       email,
-  //       password
-  //     },
-  //     {
-  //       headers: { "Content-Type": "application/json" },
-  //     }
-  //   )
-  //     .then((response) => {
-  //       alert(response.data.Message)
-  //       Router.replace('/home');
-  //       console.log(response.data.Message);
-  //     })
-  //     .catch((error) => {
-  //       if (error.response.data) {
-  //         alert(error.response.data.Message)
-  //       }
-  //       Router.reload();
-  //       console.log(error.response.data);
-  //     });
+  const handleCreateMessage = async (event) => {
+    event.preventDefault();
+
+    await axios
+      .post(
+        'http://127.0.0.1:8000/api/message',
+        {
+          text,
+          is_read: false,
+        },
+        {
+          headers: { 'Content-Type': 'application/json' },
+        },
+      )
+      .then((response) => {
+        alert(response.data.Message);
+        router.reload();
+        console.log(response.data.Message);
+      })
+      .catch((error) => {
+        if (error.response.data) {
+          alert(error.response.data.Message);
+        }
+        router.reload();
+        console.log(error.response.data);
+      })
+      .finally(() => {
+        setName(null);
+        setPassword(null);
+      });
+  };
+  const handleCreateUser = async (event) => {
+    event.preventDefault();
+
+    await axios
+      .post(
+        'http://127.0.0.1:8000/api/user',
+        {
+          name,
+          password,
+        },
+        {
+          headers: { 'Content-Type': 'application/json' },
+        },
+      )
+      .then((response) => {
+        alert(response.data.Message);
+        router.reload();
+        console.log(response.data.Message);
+      })
+      .catch((error) => {
+        if (error.response.data) {
+          alert(error.response.data.Message);
+        }
+        router.reload();
+        console.log(error.response.data);
+      })
+      .finally(() => {
+        setName(null);
+        setPassword(null);
+      });
+  };
 
   return (
     <>
       {showFormUser ? (
         <div className="flex flex-col justify-center items-center w-full h-screen bg-teal-950  ">
-          <form className="p-8 border border-emerald-400 rounded-sm">
+          <form
+            className="p-8 border border-emerald-400 rounded-sm"
+            onSubmit={(e) => handleCreateUser(e)}
+          >
             <h1 className="p-8 items-center text-white text-2xl ">
               Cadastrar Usuário
             </h1>
 
             <div>
               <label className="text-white flex flex-col mb-4">
-                {" "}
+                {' '}
                 Nome:
                 <input
                   className="p-2 text-black rounded-lg"
                   type="text"
                   name="name"
                   placeholder="Crie um Nome"
+                  onChange={(e) => setName(e.target.value)}
                 />
               </label>
             </div>
@@ -58,6 +106,7 @@ export default function Admin() {
                   type="password"
                   name="password"
                   placeholder="Crie uma Senha"
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </label>
             </div>
@@ -79,21 +128,24 @@ export default function Admin() {
         </div>
       ) : (
         <div className="flex flex-col justify-center items-center w-full h-screen bg-teal-950  ">
-          <form className="p-8 border border-emerald-400 rounded-sm">
+          <form
+            className="p-8 border border-emerald-400 rounded-sm"
+            onSubmit={(e) => handleCreateMessage(e)}
+          >
             <h1 className="p-8 items-center text-white text-2xl ">
               Enviar uma Mensagem
             </h1>
 
             <div>
               <label className="text-white flex flex-col">
-                {" "}
+                {' '}
                 Escreva sua Mensagem:
                 <textarea
                   className="text-black mt-4 rounded-sm"
                   cols="30"
                   rows="10"
+                  onChange={(e) => setText(e.target.value)}
                 ></textarea>
-                {/* <input className="p-2 text-black rounded-lg" type="text" name="name" placeholder="Escreva uma mensagem" /> */}
               </label>
             </div>
 
@@ -105,14 +157,15 @@ export default function Admin() {
           </form>
 
           <div>
-            <button className="p-2 bg-emerald-400 rounded-lg mt-4 hover:bg-emerald-500 w-full" onClick={() => setShowFormUser(true)}>
+            <button
+              className="p-2 bg-emerald-400 rounded-lg mt-4 hover:bg-emerald-500 w-full"
+              onClick={() => setShowFormUser(true)}
+            >
               Cadastrar Usuário
             </button>
           </div>
         </div>
       )}
-
-
     </>
   );
 }

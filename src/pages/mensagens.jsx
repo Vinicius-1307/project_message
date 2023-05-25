@@ -1,9 +1,10 @@
-import { Dialog, Transition } from "@headlessui/react";
-import { useState } from "react";
+import { Dialog, Transition } from '@headlessui/react';
+import axios from 'axios';
+import { useState } from 'react';
 
-export default function Message() {
+export default function Message({ getmessages }) {
   const [showModalMessage, setShowModalMessage] = useState(true);
-
+  console.log(getmessages);
   return (
     <>
       <Transition appear show={showModalMessage}>
@@ -90,31 +91,40 @@ export default function Message() {
             </thead>
 
             <tbody>
-              <tr className="text-green-400 even:bg-teal-900">
-                <td className="px-1">Texto da mensagem vai vir aqui</td>
-                <td className="px-1">23/05/2023</td>
-                <td className="px-1">Sim</td>
-              </tr>
-              <tr className="text-green-400 even:bg-teal-900">
-                <td className="px-1">Texto da mensagem vai vir aqui</td>
-                <td className="px-1">23/05/2023</td>
-                <td className="px-1">Sim</td>
-              </tr>
+              {getmessages.length > 0 ? (
+                getmessages.map((message) => (
+                  <>
+                    <tr className="text-green-400 even:bg-teal-900">
+                      <td className="px-1">{message.text}</td>
+                      <td className="px-1">{message.created_at}</td>
+                      <td className="px-1">
+                        {!!message.is_read ? 'Sim' : 'Não'}
+                      </td>
+                    </tr>
+                  </>
+                ))
+              ) : (
+                <span className="text-white">Nenhuma mensagem encontrada.</span>
+              )}
             </tbody>
           </table>
         </div>
-        {/* <div>
-          <button className="p-5 bg-emerald-400 rounded-lg hover:bg-emerald-500 w-full">
-            Novas Mensagens
-          </button>
-        </div>
-
-        <div>
-          <button className="p-5 bg-emerald-400 rounded-lg mt-8 hover:bg-emerald-500 w-full">
-            Mensagens Lidas
-          </button>
-        </div> */}
       </div>
     </>
   );
+}
+export async function getServerSideProps() {
+  const res = await axios.get(
+    'http://127.0.0.1:8000/api/message',
+    {},
+    {
+      headers: { 'Content-Type': 'application/json' },
+    },
+  );
+
+  return {
+    props: {
+      getmessages: res.data.data,
+    },
+  };
 }
